@@ -1,0 +1,20 @@
+#!/bin/bash
+# Exit on 1st error.
+set -e
+
+count() {
+  # Note: The `docker' command outputs everything with a carriage return,
+  # so we have to strip it out.
+  docker run --rm -t tsflags $1 | tr -d '\r'
+}
+
+# The docs SHOULD be installed.
+test $(count openssh-clients) -gt 0
+
+# The docs should NOT be installed.
+test $(count openssh-server) -eq 0
+
+# The docs SHOULD be installed.
+test $(count vim-common) -gt 0
+
+echo 'All tests passed!'
